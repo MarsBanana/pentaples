@@ -57,7 +57,7 @@ class Game extends React.Component {
             currentSquareValue: null
         };
     }
-
+    /*
     capture(i, squares) {
         this.setState({
             currentSquare: i,
@@ -69,7 +69,6 @@ class Game extends React.Component {
         let tiem = current.squares[i];
         squares[i] = this.state.currentSquareValue;
         squares[this.state.currentSquare] = tiem;
-        console.log(squares);
         this.setState({
             history: history.concat([
                 {
@@ -80,18 +79,36 @@ class Game extends React.Component {
             moveOrCap: !this.state.moveOrCap
         });
     }
-
+    */
     handleClick(i) {
-        var history = this.state.history.slice(0, this.state.movesCount + 1);
-        var current = history[history.length - 1];
-        var squares = current.squares.slice();
+        let history = this.state.history.slice(0, this.state.movesCount + 1);
+        let current = history[history.length - 1];
+        let squares = current.squares.slice();
         if (calculateWinner(squares)) {
             return;
         }
+        console.log(i);
+        let emptySquare = squares.indexOf("*");
+        if (i === emptySquare - 4 || i === emptySquare - 1 || i === emptySquare + 1 || i === emptySquare + 4) {
+            let tiem = squares[i];
+            let meit = squares.indexOf("*");
+            squares[i] = "*";
+            squares[meit] = tiem;
+            this.setState({
+                history: history.concat([
+                    {
+                        squares: squares
+                    }
+                ]),
+                movesCount: history.length
+            });
+        }
+        /*
         this.state.moveOrCap ? this.capture(i, squares) : this.move(i, history, current, squares);
         this.setState({
             moveOrCap: !this.state.moveOrCap
         });
+        */
     }
     jumpTo(step) {
         this.setState({
@@ -134,7 +151,7 @@ class Game extends React.Component {
                             })
                         }
                     >
-                        restart?
+                        Restart?
                     </button>
                     <button
                         onClick={() =>
@@ -145,7 +162,7 @@ class Game extends React.Component {
                             })
                         }
                     >
-                        gather
+                        Press to win
                     </button>
                     <ol>{moves}</ol>
                 </div>
