@@ -2,8 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Steps to start:
 
-
-In the project directory, you should run:
+### `git clone https://github.com/MarsBanana/pentaples.git`
 
 ### `npm install`
 
