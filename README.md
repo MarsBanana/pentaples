@@ -2,13 +2,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Steps to start:
 
-### `git clone https://github.com/MarsBanana/pentaples.git`
+#### `git clone https://github.com/MarsBanana/pentaples.git`
 
-### `npm install`
+You know what I mean.
+
+#### `npm install`
 
 Installs all the dependencies needed to run the app.
 
-### `npm start`
+#### `npm start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
