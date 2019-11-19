@@ -175,7 +175,6 @@ ReactDOM.render(<Game />, document.getElementById("root"));
 
 //##############################################################
 
-//вспомогательная функция
 function putToCache(elem, cache) {
     if (cache.indexOf(elem) !== -1) {
         return;
@@ -183,7 +182,6 @@ function putToCache(elem, cache) {
     var i = Math.floor(Math.random() * (cache.length + 1));
     cache.splice(i, 0, elem);
 }
-//функция, возвращающая свеженький, девственный компаратор
 function madness() {
     var cache = [];
     return function(a, b) {
@@ -192,7 +190,6 @@ function madness() {
         return cache.indexOf(b) - cache.indexOf(a);
     };
 }
-//собственно функция перемешивания
 function shuffle(arr) {
     var compare = madness();
     return arr.sort(compare);
@@ -205,3 +202,16 @@ function calculateWinner(squares) {
         return false;
     }
 }
+document.body.onkeydown = function(e) {
+    let arr = Game.render.current;
+    let emptySquare = arr.indexOf("*");
+    if (e.code === "ArrowUp") {
+        Game.handleClick(emptySquare);
+    } else if (e.code === "ArrowDown") {
+        Game.handleClick(emptySquare);
+    } else if (e.code === "ArrowLeft") {
+        Game.handleClick(emptySquare);
+    } else if (e.code === "ArrowRight") {
+        Game.handleClick(emptySquare);
+    }
+};
