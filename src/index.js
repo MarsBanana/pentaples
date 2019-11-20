@@ -51,10 +51,10 @@ class Game extends React.Component {
         super(props);
         this.state = {
             history: [{ squares: shuffle(sqarr) }],
-            movesCount: 0,
-            moveOrCap: true,
-            currentSquare: null,
-            currentSquareValue: null
+            movesCount: 0
+            //moveOrCap: true,
+            //currentSquare: null,
+            //currentSquareValue: null
         };
     }
     /*
@@ -117,18 +117,15 @@ class Game extends React.Component {
         });
     }
     keyDown(e) {
-        let history = this.state.history.slice(0, this.state.movesCount + 1);
-        let current = history[history.length - 1];
-        let squares = current.squares.slice();
-        console.log(e);
-        let emptySquare = squares.indexOf("*");
-        if (e.code === "ArrowUp") {
+        e.preventDefault();
+        let emptySquare = this.state.history[this.state.movesCount].squares.indexOf("*");
+        if (e.code === "ArrowUp" && emptySquare > 3) {
             this.handleClick(emptySquare - 4);
-        } else if (e.code === "ArrowDown") {
+        } else if (e.code === "ArrowDown" && emptySquare < 12) {
             this.handleClick(emptySquare + 4);
-        } else if (e.code === "ArrowLeft") {
+        } else if (e.code === "ArrowLeft" && emptySquare !== 0 && emptySquare !== 4 && emptySquare !== 8 && emptySquare !== 12) {
             this.handleClick(emptySquare - 1);
-        } else if (e.code === "ArrowRight") {
+        } else if (e.code === "ArrowRight" && emptySquare !== 3 && emptySquare !== 7 && emptySquare !== 11 && emptySquare !== 15) {
             this.handleClick(emptySquare + 1);
         }
     }
@@ -152,8 +149,10 @@ class Game extends React.Component {
                 return move;
             }
         }
+
+        document.onkeydown = event => this.keyDown(event);
         return (
-            <div className="container" onKeyDown={e => this.keyDown(e)}>
+            <div className="container">
                 <h1>Pentaples</h1>
                 <Board squares={current.squares} onClick={i => this.handleClick(i)} />
                 <div className="game-info">
@@ -162,8 +161,8 @@ class Game extends React.Component {
                         onClick={() =>
                             this.setState({
                                 history: [{ squares: shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "*"]) }],
-                                movesCount: 0,
-                                moveOrCap: true
+                                movesCount: 0
+                                //moveOrCap: true
                             })
                         }
                     >
@@ -173,8 +172,8 @@ class Game extends React.Component {
                         onClick={() =>
                             this.setState({
                                 history: [{ squares: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "*"] }],
-                                movesCount: 0,
-                                moveOrCap: true
+                                movesCount: 0
+                                //moveOrCap: true
                             })
                         }
                     >
