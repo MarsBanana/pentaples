@@ -116,7 +116,22 @@ class Game extends React.Component {
             moveOrCap: true
         });
     }
-
+    keyDown(e) {
+        let history = this.state.history.slice(0, this.state.movesCount + 1);
+        let current = history[history.length - 1];
+        let squares = current.squares.slice();
+        console.log(e);
+        let emptySquare = squares.indexOf("*");
+        if (e.code === "ArrowUp") {
+            this.handleClick(emptySquare - 4);
+        } else if (e.code === "ArrowDown") {
+            this.handleClick(emptySquare + 4);
+        } else if (e.code === "ArrowLeft") {
+            this.handleClick(emptySquare - 1);
+        } else if (e.code === "ArrowRight") {
+            this.handleClick(emptySquare + 1);
+        }
+    }
     render() {
         const history = this.state.history;
         const current = history[this.state.movesCount];
@@ -128,6 +143,7 @@ class Game extends React.Component {
                 </li>
             );
         });
+
         let move = this.state.movesCount;
         function announcer(move, history) {
             if (calculateWinner(history[move].squares)) {
@@ -137,7 +153,7 @@ class Game extends React.Component {
             }
         }
         return (
-            <div className="container">
+            <div className="container" onKeyDown={e => this.keyDown(e)}>
                 <h1>Pentaples</h1>
                 <Board squares={current.squares} onClick={i => this.handleClick(i)} />
                 <div className="game-info">
@@ -202,16 +218,3 @@ function calculateWinner(squares) {
         return false;
     }
 }
-document.body.onkeydown = function(e) {
-    let arr = Game.render.current;
-    let emptySquare = arr.indexOf("*");
-    if (e.code === "ArrowUp") {
-        Game.handleClick(emptySquare);
-    } else if (e.code === "ArrowDown") {
-        Game.handleClick(emptySquare);
-    } else if (e.code === "ArrowLeft") {
-        Game.handleClick(emptySquare);
-    } else if (e.code === "ArrowRight") {
-        Game.handleClick(emptySquare);
-    }
-};
