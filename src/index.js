@@ -50,36 +50,10 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            history: [{ squares: shuffle(sqarr) }],
+            history: [],
             movesCount: 0
-            //moveOrCap: true,
-            //currentSquare: null,
-            //currentSquareValue: null
         };
     }
-    /*
-    capture(i, squares) {
-        this.setState({
-            currentSquare: i,
-            currentSquareValue: squares[i]
-        });
-    }
-
-    move(i, history, current, squares) {
-        let tiem = current.squares[i];
-        squares[i] = this.state.currentSquareValue;
-        squares[this.state.currentSquare] = tiem;
-        this.setState({
-            history: history.concat([
-                {
-                    squares: squares
-                }
-            ]),
-            movesCount: history.length,
-            moveOrCap: !this.state.moveOrCap
-        });
-    }
-    */
     handleClick(i) {
         let history = this.state.history.slice(0, this.state.movesCount + 1);
         let current = history[history.length - 1];
@@ -103,17 +77,16 @@ class Game extends React.Component {
                 movesCount: history.length
             });
         }
-        /*
-        this.state.moveOrCap ? this.capture(i, squares) : this.move(i, history, current, squares);
-        this.setState({
-            moveOrCap: !this.state.moveOrCap
-        });
-        */
     }
     jumpTo(step) {
         this.setState({
             movesCount: step,
             moveOrCap: true
+        });
+    }
+    fill(e) {
+        this.setState({
+            history: this.state.history.concat([{ squares: shuffle(sqarr) }])
         });
     }
     keyDown(e) {
@@ -134,11 +107,7 @@ class Game extends React.Component {
         const current = history[this.state.movesCount];
         const moves = history.map((step, move) => {
             const desc = move ? "Go to move #" + move : "Go to game start";
-            return (
-                <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}> {desc} </button>{" "}
-                </li>
-            );
+            return <option key={move}>{desc}</option>;
         });
 
         let move = this.state.movesCount;
@@ -151,38 +120,46 @@ class Game extends React.Component {
         }
 
         document.onkeydown = event => this.keyDown(event);
-        return (
-            <div className="container">
-                <h1>Pentaples</h1>
-                <Board squares={current.squares} onClick={i => this.handleClick(i)} />
-                <div className="game-info">
-                    <div className="moves-counter">{announcer(move, history)}</div>
-                    <button
-                        onClick={() =>
-                            this.setState({
-                                history: [{ squares: shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "*"]) }],
-                                movesCount: 0
-                                //moveOrCap: true
-                            })
-                        }
-                    >
-                        Restart?
-                    </button>
-                    <button
-                        onClick={() =>
-                            this.setState({
-                                history: [{ squares: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "*"] }],
-                                movesCount: 0
-                                //moveOrCap: true
-                            })
-                        }
-                    >
-                        Press to win
-                    </button>
-                    <ol>{moves}</ol>
+        if (history.length > 0) {
+            return (
+                <div className="container">
+                    <h1>Pentaples</h1>
+                    <Board squares={current.squares} onClick={i => this.handleClick(i)} />
+                    <div className="game-info">
+                        <div className="moves-counter">{announcer(move, history)}</div>
+                        <button
+                            onClick={() =>
+                                this.setState({
+                                    history: [{ squares: shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "*"]) }],
+                                    movesCount: 0
+                                })
+                            }
+                        >
+                            Restart?
+                        </button>
+                        <button
+                            onClick={() =>
+                                this.setState({
+                                    history: [{ squares: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "*"] }],
+                                    movesCount: 0
+                                })
+                            }
+                        >
+                            Press to win
+                        </button>
+                        <select onChange={move => this.jumpTo(move)}>{moves}</select>
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        } else {
+            document.onkeydown = event => this.fill(event);
+            return (
+                <div id="pregame">
+                    <h3>Use your keyboard to play</h3>
+                    <div id="keys"></div>
+                </div>
+            );
+        }
     }
 }
 
